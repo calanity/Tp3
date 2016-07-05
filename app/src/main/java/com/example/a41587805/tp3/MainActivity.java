@@ -1,6 +1,8 @@
 package com.example.a41587805.tp3;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private String userName="";
     private TextView navUserName;
     ArrayList<Resultado> Resultados;
+    baseTP3SQLiteHelper accesoBaseTP3;
+    SQLiteDatabase baseDatos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +46,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         inicializarToolbar(); // Setear Toolbar como action bar
         inicializarTabs(); // Crear los tabs
 
+        Resultados = new ArrayList<>();
+
+        accesoBaseTP3= new baseTP3SQLiteHelper(this, "baseTP3",null, 1);
+        baseDatos= accesoBaseTP3.getWritableDatabase();
+
+        if (basedeDatosAbierta()== true) {
+            Cursor conjuntodRegistros;
+            conjuntodRegistros= baseDatos.rawQuery("select nombre, movimientos, cantidad from resultados",null);
+
+            if (conjuntodRegistros.moveToFirst() == true){
+                int cantidadRegistros=0;
+                do {
+                    cantidadRegistros++;
+                    String nombre = conjuntodRegistros.getString(0);
+                    String movimientos = conjuntodRegistros.getString(1);
+                    int cant = conjuntodRegistros.getInt(2);
+                    Resultado r = new Resultado(nombre, movimientos, cant);
+                    Resultados.add(r);
+                } while (conjuntodRegistros.moveToNext() == true);
+            }
+        }
 
     }
 
@@ -86,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
                         UserNameDialog userNameDialog = new UserNameDialog();
                         userNameDialog.show(fm, "fragment_edit_name");
                         break;
+                    case R.id.nav_background:
+                        //cambiar el color
+                        FragmentManager fm2 = getSupportFragmentManager();
+                        BackgroundDialog backgroundDialog = new BackgroundDialog();
+                        backgroundDialog.show(fm2, "fragment_edit_background");
+
                 }
 
                 drawerLayout.closeDrawers();
@@ -119,6 +151,43 @@ public class MainActivity extends AppCompatActivity {
     public void setResultados (ArrayList<Resultado> resultados) { Resultados = resultados; }
 
     public ArrayList<Resultado> getResultados() { return Resultados; }
+
+    public SQLiteDatabase getBaseDatos() {
+        return baseDatos;
+    }
+
+    Boolean basedeDatosAbierta()
+    {
+        Boolean responder;
+        accesoBaseTP3 = new baseTP3SQLiteHelper(this, "baseTP3", null, 1);
+        baseDatos= accesoBaseTP3.getWritableDatabase();
+        if (baseDatos!= null)
+        {
+            responder= true;
+        }
+        else
+        {
+            responder= false;
+        }
+        return responder;
+    }
+
+    public void setColor(int color){
+        switch (color){
+            case 0:
+            tabHost.getTabContentView().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Rosa));
+                break;
+
+            case 1:
+            tabHost.getTabContentView().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Azul));
+                break;
+
+            case 2:
+            tabHost.getTabContentView().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Rojo));
+                break;
+
+        }
+    }
 
 
 }

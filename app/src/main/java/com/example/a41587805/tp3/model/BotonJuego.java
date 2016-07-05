@@ -15,10 +15,12 @@ public class BotonJuego extends ImageButton {
 
 
     boolean estado;
+    Random random;
 
     public BotonJuego(Context context, AttributeSet attrs) {
         super(context, attrs);
-        estado= new Random().nextBoolean();
+        random = new Random();
+        estado= random.nextBoolean();
         pintar();
     }
 
@@ -50,7 +52,7 @@ public class BotonJuego extends ImageButton {
 
     public void reset()
     {
-        estado= new Random().nextBoolean();
+        estado= random.nextBoolean();
         pintar();
     }
 

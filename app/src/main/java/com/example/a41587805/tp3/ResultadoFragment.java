@@ -1,6 +1,8 @@
 package com.example.a41587805.tp3;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class ResultadoFragment extends Fragment {
     ArrayList<Resultado> resultados;
     ResultadosAdapter adapter;
     ListView lista;
+    SQLiteDatabase baseDatos;
 
     public ResultadoFragment() {
         // Required empty public constructor
@@ -40,7 +43,6 @@ public class ResultadoFragment extends Fragment {
 
         lista = (ListView) view.findViewById(R.id.listview);
 
-        resultados = new ArrayList<>();
         ma = (MainActivity) getActivity();
         resultados = ma.getResultados();
 
@@ -62,6 +64,11 @@ public class ResultadoFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.nav_delete:
                 Log.d("borrar", "ison");
+                baseDatos = ma.getBaseDatos();
+                if ((ma.basedeDatosAbierta()== true))
+                {
+                    baseDatos.delete("resultados", "", null);
+                }
                 resultados.clear();
                 adapter.notifyDataSetChanged();
                 break;

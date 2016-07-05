@@ -1,5 +1,9 @@
 package com.example.a41587805.tp3.model;
 
+import android.database.sqlite.SQLiteDatabase;
+
+import com.example.a41587805.tp3.MainActivity;
+
 /**
  * Created by 41587805 on 28/6/2016.
  */
@@ -13,6 +17,7 @@ public class Resultado {
         this.movimientos = movimientos;
         this.cantidad = cantidad;
     }
+
 
     public String getNombre() {
         return nombre;

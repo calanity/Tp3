@@ -1,6 +1,8 @@
 package com.example.a41587805.tp3;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,13 +24,16 @@ import java.util.ArrayList;
  */
 public class JuegoFragment extends Fragment implements View.OnClickListener {
 
-    BotonJuego btn1, btn2, btn3, btn4, btn5, btn6, btn7,btn8, btn9;
+
+    BotonJuego btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
     String usuario;
-    String movimientos="";
-    int cantidad=0;
+    String movimientos = "";
+    int cantidad = 0;
     MainActivity ma;
     Resultado resul;
     ArrayList<Resultado> resultados;
+    Boolean ganaste= false;
+    SQLiteDatabase baseDatos;
 
     public JuegoFragment() {
         // Required empty public constructor
@@ -46,15 +51,17 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.juego_fragment, container, false);
 
-        btn1 = (BotonJuego)(view.findViewById(R.id.btn1));
-        btn2 = (BotonJuego)(view.findViewById(R.id.btn2));
-        btn3 = (BotonJuego)(view.findViewById(R.id.btn3));
-        btn4 = (BotonJuego)(view.findViewById(R.id.btn4));
-        btn5 = (BotonJuego)(view.findViewById(R.id.btn5));
-        btn6 = (BotonJuego)(view.findViewById(R.id.btn6));
-        btn7 = (BotonJuego)(view.findViewById(R.id.btn7));
-        btn8 = (BotonJuego)(view.findViewById(R.id.btn8));
-        btn9 = (BotonJuego)(view.findViewById(R.id.btn9));
+
+
+        btn1 = (BotonJuego) (view.findViewById(R.id.btn1));
+        btn2 = (BotonJuego) (view.findViewById(R.id.btn2));
+        btn3 = (BotonJuego) (view.findViewById(R.id.btn3));
+        btn4 = (BotonJuego) (view.findViewById(R.id.btn4));
+        btn5 = (BotonJuego) (view.findViewById(R.id.btn5));
+        btn6 = (BotonJuego) (view.findViewById(R.id.btn6));
+        btn7 = (BotonJuego) (view.findViewById(R.id.btn7));
+        btn8 = (BotonJuego) (view.findViewById(R.id.btn8));
+        btn9 = (BotonJuego) (view.findViewById(R.id.btn9));
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
         btn3.setOnClickListener(this);
@@ -65,9 +72,10 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
         btn8.setOnClickListener(this);
         btn9.setOnClickListener(this);
 
+        ganaste = false;
+
         ma = (MainActivity) getActivity();
-        usuario = ma.getUserName();
-        resultados = new ArrayList<>();
+        resultados = ma.getResultados();
         ma.setResultados(resultados);
 
         return view;
@@ -76,86 +84,116 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn1:
-                movimientos+= "1 ";
-                cantidad++;
-                btn2.flip();
-                btn4.flip();
-                break;
+        if (ganaste== false) {
+            switch (view.getId()) {
+                case R.id.btn1:
+                    movimientos += "1 ";
+                    cantidad++;
+                    btn1.flip();
+                    btn2.flip();
+                    btn4.flip();
+                    break;
 
-            case R.id.btn2:
-                movimientos+= "2 ";
-                cantidad++;
-                btn1.flip();
-                btn3.flip();
-                btn5.flip();
-                break;
+                case R.id.btn2:
+                    movimientos += "2 ";
+                    cantidad++;
+                    btn2.flip();
+                    btn1.flip();
+                    btn3.flip();
+                    btn5.flip();
+                    break;
 
-            case R.id.btn3:
-                movimientos+= "3 ";
-                cantidad++;
-                btn2.flip();
-                btn6.flip();
-                break;
+                case R.id.btn3:
+                    movimientos += "3 ";
+                    cantidad++;
+                    btn3.flip();
+                    btn2.flip();
+                    btn6.flip();
+                    break;
 
-            case R.id.btn4:
-                movimientos+= "4 ";
-                cantidad++;
-                btn1.flip();
-                btn5.flip();
-                btn7.flip();
-                break;
+                case R.id.btn4:
+                    movimientos += "4 ";
+                    cantidad++;
+                    btn4.flip();
+                    btn1.flip();
+                    btn5.flip();
+                    btn7.flip();
+                    break;
 
-            case R.id.btn5:
-                movimientos+= "5 ";
-                cantidad++;
-                btn2.flip();
-                btn6.flip();
-                btn4.flip();
-                btn8.flip();
-                break;
+                case R.id.btn5:
+                    movimientos += "5 ";
+                    cantidad++;
+                    btn5.flip();
+                    btn2.flip();
+                    btn6.flip();
+                    btn4.flip();
+                    btn8.flip();
+                    break;
 
-            case R.id.btn6:
-                movimientos+= "6 ";
-                cantidad++;
-                btn3.flip();
-                btn5.flip();
-                btn9.flip();
-                break;
+                case R.id.btn6:
+                    movimientos += "6 ";
+                    cantidad++;
+                    btn6.flip();
+                    btn3.flip();
+                    btn5.flip();
+                    btn9.flip();
+                    break;
 
-            case R.id.btn7:
-                movimientos+= "7 ";
-                cantidad++;
-                btn4.flip();
-                btn8.flip();
-                break;
+                case R.id.btn7:
+                    movimientos += "7 ";
+                    cantidad++;
+                    btn7.flip();
+                    btn4.flip();
+                    btn8.flip();
+                    break;
 
-            case R.id.btn8:
-                movimientos+= "8 ";
-                cantidad++;
-                btn9.flip();
-                btn5.flip();
-                btn7.flip();
-                break;
+                case R.id.btn8:
+                    movimientos += "8 ";
+                    cantidad++;
+                    btn8.flip();
+                    btn9.flip();
+                    btn5.flip();
+                    btn7.flip();
+                    break;
 
-            case R.id.btn9:
-                movimientos+= "9 ";
-                cantidad++;
-                btn8.flip();
-                btn6.flip();
-                break;
+                case R.id.btn9:
+                    movimientos += "9 ";
+                    cantidad++;
+                    btn9.flip();
+                    btn8.flip();
+                    btn6.flip();
+                    break;
+
         }
 
-        if ((btn1.isEstado() == true && btn2.isEstado() == true && btn3.isEstado() == true && btn4.isEstado() == true && btn5.isEstado() == true && btn6.isEstado() == true && btn7.isEstado() == true && btn8.isEstado() == true && btn9.isEstado() == true)
-                ||  (btn1.isEstado() == false && btn2.isEstado() == false && btn3.isEstado() == false && btn4.isEstado() == false && btn5.isEstado() == false && btn6.isEstado() == false && btn7.isEstado() == false && btn8.isEstado() == false && btn9.isEstado() == false))
-        {
-            resul = new Resultado(usuario, movimientos, cantidad);
-            resultados.add(resul);
 
-            Toast mensaje = Toast.makeText(view.getContext(),"Ganaste",Toast.LENGTH_SHORT);
-            mensaje.show();
+            if ((btn1.isEstado() == true && btn2.isEstado() == true && btn3.isEstado() == true && btn4.isEstado() == true && btn5.isEstado() == true && btn6.isEstado() == true && btn7.isEstado() == true && btn8.isEstado() == true && btn9.isEstado() == true)
+                    || (btn1.isEstado() == false && btn2.isEstado() == false && btn3.isEstado() == false && btn4.isEstado() == false && btn5.isEstado() == false && btn6.isEstado() == false && btn7.isEstado() == false && btn8.isEstado() == false && btn9.isEstado() == false))
+
+            {
+                usuario = ma.getUserName();
+                resul = new Resultado(usuario, movimientos, cantidad);
+                resultados.add(resul);
+                CargarResultado(resul);
+                ganaste = true;
+                btn1.setEnabled(false);
+                btn2.setEnabled(false);
+                btn3.setEnabled(false);
+                btn4.setEnabled(false);
+                btn5.setEnabled(false);
+                btn6.setEnabled(false);
+                btn7.setEnabled(false);
+                btn8.setEnabled(false);
+                btn9.setEnabled(false);
+                Toast mensaje = Toast.makeText(view.getContext(), "Ganaste", Toast.LENGTH_SHORT);
+                mensaje.show();
+                cantidad=0;
+                movimientos="";
+                resul = new Resultado("","",0);
+
+            }
         }
+
     }
 
     @Override
@@ -170,8 +208,12 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.nav_refresh:
                 Log.d("refresh", "ison");
-                resul = new Resultado(usuario, movimientos, cantidad);
-                resultados.add(resul);
+                usuario = ma.getUserName();
+                if(ganaste == false) {
+                    resul = new Resultado(usuario, movimientos, cantidad);
+                    resultados.add(resul);
+                    CargarResultado(resul);
+                }
                 btn1.reset();
                 btn2.reset();
                 btn3.reset();
@@ -181,11 +223,46 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
                 btn7.reset();
                 btn8.reset();
                 btn9.reset();
-                //hacer que haya minimo uno diferente para que no venga ganado
+                ganaste= false;
+                btn1.setEnabled(true);
+                btn2.setEnabled(true);
+                btn3.setEnabled(true);
+                btn4.setEnabled(true);
+                btn5.setEnabled(true);
+                btn6.setEnabled(true);
+                btn7.setEnabled(true);
+                btn8.setEnabled(true);
+                btn9.setEnabled(true);
                 cantidad=0;
                 movimientos="";
+                resul = new Resultado("", "", 0);
+
                 break;
         }
         return true;
-}
+    }
+
+    public void CargarResultado(Resultado resul)
+    {
+        ma = (MainActivity) getActivity();
+        //abre la conexion y carga el resultado
+        baseDatos = ma.getBaseDatos();
+        if (baseDatos!= null)
+        {
+            if (ma.basedeDatosAbierta() == true){
+                ContentValues nuevoRegistro;
+
+                nuevoRegistro = new ContentValues();
+                nuevoRegistro.put("nombre" , resul.getNombre());
+                nuevoRegistro.put("movimientos", resul.getMovimientos());
+                nuevoRegistro.put("cantidad", resul.getCantidad());
+                baseDatos.insert("resultados", null, nuevoRegistro);
+                baseDatos.close();
+            }
+
+        }
+
+    }
+
+
 }

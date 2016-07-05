@@ -18,6 +18,8 @@ import android.widget.EditText;
 
 public class UserNameDialog extends DialogFragment {
 
+    MainActivity ma;
+
     public UserNameDialog() {
         // Empty constructor required for DialogFragment
     }
@@ -27,16 +29,16 @@ public class UserNameDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_name_fragment, container);
 
-        final MainActivity mainActivity  = (MainActivity) getActivity(); // Politicamente incorrecto
+        ma = (MainActivity) getActivity();
         final EditText userName = (EditText) view.findViewById(R.id.txt_your_name);
-        userName.setText(mainActivity.getUserName());
+        userName.setText(ma.getUserName());
 
         Button b = (Button) view.findViewById(R.id.confirmar);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("Click","OK");
-                mainActivity.setUserName(userName.getText().toString());
+                ma.setUserName(userName.getText().toString());
                 dismiss();
             }
         });
