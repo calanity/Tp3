@@ -36,11 +36,11 @@ public class BotonJuego extends ImageButton {
     {
         if (estado)
         {
-            this.setImageResource(R.drawable.ficha1);
+            this.setImageResource(R.drawable.minniemouse);
         }
         else
         {
-            this.setImageResource(R.drawable.ficha2);
+            this.setImageResource(R.drawable.patodonald);
         }
 
     }

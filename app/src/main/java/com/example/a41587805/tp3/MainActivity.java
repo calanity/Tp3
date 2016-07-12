@@ -57,18 +57,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (basedeDatosAbierta()== true) {
             Cursor conjuntodRegistros;
-            conjuntodRegistros= baseDatos.rawQuery("select nombre, movimientos, cantidad from resultados",null);
+            conjuntodRegistros = baseDatos.rawQuery("select nombre, movimientos, cantidad, gano from resultados", null);
 
-            if (conjuntodRegistros.moveToFirst() == true){
-                int cantidadRegistros=0;
-                do {
-                    cantidadRegistros++;
-                    String nombre = conjuntodRegistros.getString(0);
-                    String movimientos = conjuntodRegistros.getString(1);
-                    int cant = conjuntodRegistros.getInt(2);
-                    Resultado r = new Resultado(nombre, movimientos, cant);
-                    Resultados.add(r);
-                } while (conjuntodRegistros.moveToNext() == true);
+            if (conjuntodRegistros.getCount() > 0) {
+                if (conjuntodRegistros.moveToFirst() == true) {
+                    int cantidadRegistros = 0;
+                    do {
+                        cantidadRegistros++;
+                        String nombre = conjuntodRegistros.getString(0);
+                        String movimientos = conjuntodRegistros.getString(1);
+                        int cant = conjuntodRegistros.getInt(2);
+                        int gano = conjuntodRegistros.getInt(3);
+                        Resultado r = new Resultado(nombre, movimientos, cant, gano);
+                        Resultados.add(r);
+                    } while (conjuntodRegistros.moveToNext() == true);
+                }
             }
         }
 
@@ -91,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
         tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
         tabHost.addTab(
-                tabHost.newTabSpec("tab1").setIndicator("Tab 1", null),
+                tabHost.newTabSpec("tab1").setIndicator("Juego", null),
                 JuegoFragment.class, null);
         tabHost.addTab(
-                tabHost.newTabSpec("tab2").setIndicator("Tab 2", null),
+                tabHost.newTabSpec("tab2").setIndicator("Resultados", null),
                 ResultadoFragment.class, null);
     }
 
@@ -184,6 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
             case 2:
             tabHost.getTabContentView().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Rojo));
+                break;
+
+            case 3:
+                tabHost.getTabContentView().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Blanco));
                 break;
 
         }

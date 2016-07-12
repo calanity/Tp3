@@ -17,7 +17,7 @@ public class baseTP3SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase baseDatos) {
         String sqlCrearTablaResultados;
-        sqlCrearTablaResultados= "create table resultados(nombre text, cantidad integer , movimientos text)";
+        sqlCrearTablaResultados= "create table resultados(nombre text, cantidad integer , movimientos text, gano integer)";
         baseDatos.execSQL(sqlCrearTablaResultados);
 
     }

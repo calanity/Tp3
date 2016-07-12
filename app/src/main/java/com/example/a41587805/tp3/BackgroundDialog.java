@@ -37,6 +37,7 @@ public class BackgroundDialog extends DialogFragment {
         datosSpinner.add("Rosa");
         datosSpinner.add("Azul");
         datosSpinner.add("Rojo");
+        datosSpinner.add("Blanco");
 
         adaptador = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, datosSpinner);
         adaptador.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -57,7 +58,7 @@ public class BackgroundDialog extends DialogFragment {
                 dismiss();
             }
         });
-        getDialog().setTitle("Elija color de fondo");
+        getDialog().setTitle("Elija un color de fondo");
 
         return view;
     }

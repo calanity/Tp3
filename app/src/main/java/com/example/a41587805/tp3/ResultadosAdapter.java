@@ -48,11 +48,24 @@ public class ResultadosAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.obj_resultado, viewGroup, false);
         }
 
-        TextView resultado = (TextView)view.findViewById(R.id.resultado);
+        TextView nombre = (TextView)view.findViewById(R.id.nombre);
+        TextView movimientos = (TextView)view.findViewById(R.id.movimientos);
+        TextView cantidad = (TextView)view.findViewById(R.id.cantidad);
+        TextView gano= (TextView)view.findViewById(R.id.gano);
 
         Resultado r = resultados.get(position);
-        String resul = "Nombre: " + r.getNombre() + ", Movimientos: " + r.getMovimientos() + ", Cantidad: " + r.getCantidad();
-        resultado.setText(resul);
+        nombre.setText("Nombre: " + r.getNombre());
+        movimientos.setText("Movimientos: " + r.getMovimientos());
+        cantidad.setText("Cantidad: " + r.getCantidad());
+        if(r.getGanaste()==1)
+        {
+            gano.setText("No ganó");
+        }
+
+        if(r.getGanaste()==2)
+        {
+            gano.setText("Ganó :)");
+        }
         return view;
     }
 }

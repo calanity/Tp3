@@ -12,10 +12,24 @@ public class Resultado {
     String movimientos;
     int cantidad;
 
-    public Resultado(String nombre, String movimientos, int cantidad) {
+    public int getGanaste() {
+        return ganaste;
+    }
+
+    public void setGanaste(int ganaste) {
+        this.ganaste = ganaste;
+    }
+
+    int ganaste;
+
+
+
+
+    public Resultado(String nombre, String movimientos, int cantidad, int ganaste) {
         this.nombre = nombre;
         this.movimientos = movimientos;
         this.cantidad = cantidad;
+        this.ganaste= ganaste;
     }
 
 
@@ -42,4 +56,5 @@ public class Resultado {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
 }

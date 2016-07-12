@@ -32,8 +32,9 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
     MainActivity ma;
     Resultado resul;
     ArrayList<Resultado> resultados;
-    Boolean ganaste= false;
+    Boolean win= false;
     SQLiteDatabase baseDatos;
+
 
     public JuegoFragment() {
         // Required empty public constructor
@@ -72,7 +73,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
         btn8.setOnClickListener(this);
         btn9.setOnClickListener(this);
 
-        ganaste = false;
+        win = false;
 
         ma = (MainActivity) getActivity();
         resultados = ma.getResultados();
@@ -84,7 +85,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (ganaste== false) {
+        if (win== false) {
             switch (view.getId()) {
                 case R.id.btn1:
                     movimientos += "1 ";
@@ -172,10 +173,10 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
 
             {
                 usuario = ma.getUserName();
-                resul = new Resultado(usuario, movimientos, cantidad);
+                resul = new Resultado(usuario, movimientos, cantidad, 2);
                 resultados.add(resul);
                 CargarResultado(resul);
-                ganaste = true;
+                win = true;
                 btn1.setEnabled(false);
                 btn2.setEnabled(false);
                 btn3.setEnabled(false);
@@ -189,7 +190,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
                 mensaje.show();
                 cantidad=0;
                 movimientos="";
-                resul = new Resultado("","",0);
+                resul = new Resultado("","",0, 0);
 
             }
         }
@@ -209,8 +210,8 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
             case R.id.nav_refresh:
                 Log.d("refresh", "ison");
                 usuario = ma.getUserName();
-                if(ganaste == false) {
-                    resul = new Resultado(usuario, movimientos, cantidad);
+                if(win == false) {
+                    resul = new Resultado(usuario, movimientos, cantidad , 1);
                     resultados.add(resul);
                     CargarResultado(resul);
                 }
@@ -223,7 +224,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
                 btn7.reset();
                 btn8.reset();
                 btn9.reset();
-                ganaste= false;
+                win= false;
                 btn1.setEnabled(true);
                 btn2.setEnabled(true);
                 btn3.setEnabled(true);
@@ -235,7 +236,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
                 btn9.setEnabled(true);
                 cantidad=0;
                 movimientos="";
-                resul = new Resultado("", "", 0);
+                resul = new Resultado("", "", 0,0);
 
                 break;
         }
@@ -256,6 +257,7 @@ public class JuegoFragment extends Fragment implements View.OnClickListener {
                 nuevoRegistro.put("nombre" , resul.getNombre());
                 nuevoRegistro.put("movimientos", resul.getMovimientos());
                 nuevoRegistro.put("cantidad", resul.getCantidad());
+                nuevoRegistro.put("gano", resul.getGanaste());
                 baseDatos.insert("resultados", null, nuevoRegistro);
                 baseDatos.close();
             }
